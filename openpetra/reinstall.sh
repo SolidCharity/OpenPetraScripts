@@ -2,6 +2,11 @@
 # Author: Timotheus Pokorra <tp@tbits.net>
 # Copyright: 2017 TBits.net
 
+if [ -z "$URL" ]
+then
+  export URL=demo.openpetra.org
+fi
+
 echo "this script will remove OpenPetra, and DELETE all YOUR data!!!"
 read -p "Are you sure? Type y or Ctrl-C " -r
 echo 
@@ -50,7 +55,8 @@ then
 fi
 cd -
 
+yum clean all
 yum -y install openpetranow-mysql-test
 
-URL=demo.openpetra.org openpetra-server init
+openpetra-server init
 openpetra-server initdb
