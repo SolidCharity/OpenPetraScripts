@@ -31,11 +31,11 @@ yum -y remove mariadb lighttpd openpetranow-mysql-test
 # remove the users
 if [ -d /home/openpetra ]
 then
-  userdel -r openpetra
+  userdel -r openpetra || exit -1
 fi
 for d in /home/op_*
 do
-  userdel -r `basename $d`
+  userdel -r `basename $d` || exit -1
 done
 
 rm -Rf /etc/lighttpd
@@ -59,5 +59,6 @@ yum clean all
 yum -y install epel-release
 yum -y install openpetranow-mysql-test || exit -1
 
+export OPENPETRA_DBPWD=`openpetra-server generatepwd`
 openpetra-server init || exit -1
 openpetra-server initdb || exit -1
