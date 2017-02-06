@@ -59,6 +59,12 @@ yum clean all
 yum -y install epel-release
 yum -y install openpetranow-mysql-test || exit -1
 
+if [ -f /tmp/openpetra-server ]
+then
+  echo "testing: use /tmp/openpetra-server"
+  cp /tmp/openpetra-server /usr/bin
+fi
+
 export OPENPETRA_DBPWD=`openpetra-server generatepwd`
 openpetra-server init || exit -1
 openpetra-server initdb || exit -1
