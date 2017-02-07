@@ -1,7 +1,7 @@
 #!/bin/bash
-
 # Author: Timotheus Pokorra <tp@tbits.net>
 # Copyright: 2017 TBits.net
+# Description: add a new OpenPetra instance, creating/overwriting the database
 
 if [ -z "$1" ]
 then
@@ -49,5 +49,5 @@ export OPENPETRA_PORT=$id
 # add service
 echo -e "op_$customer\t$OPENPETRA_PORT/tcp\t\t\t# OpenPetra for $customer" >> /etc/services
 
-openpetra-server init
-openpetra-server initdb
+openpetra-server init || exit -1
+openpetra-server initdb || exit -1

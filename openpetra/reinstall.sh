@@ -1,6 +1,7 @@
 #!/bin/bash
 # Author: Timotheus Pokorra <tp@tbits.net>
 # Copyright: 2017 TBits.net
+# Description: reinstall the whole server, loosing all data
 
 if [ -z "$OPENPETRA_URL" ]
 then
@@ -68,3 +69,12 @@ fi
 export OPENPETRA_DBPWD=`openpetra-server generatepwd`
 openpetra-server init || exit -1
 openpetra-server initdb || exit -1
+
+crontab -l || echo | crontab -
+if [[ "`crontab -l | grep openpetra/backup.sh`" == "" ]]
+then
+  pwd=`pwd`
+  (crontab -l && echo "45 0 * * * $pwd/backup.sh all" ) | crontab -
+  systemctl enable crond
+  systemctl start crond
+fi
