@@ -5,6 +5,8 @@
 
 if [ -z "$OPENPETRA_URL" ]
 then
+  echo "Please specify the OPENPETRA_URL environment variable!"
+  exit -1
   export OPENPETRA_URL=demo.openpetra.org
 fi
 
@@ -70,7 +72,7 @@ export OPENPETRA_DBPWD=`openpetra-server generatepwd`
 openpetra-server init || exit -1
 openpetra-server initdb || exit -1
 
-crontab -l || echo | crontab -
+crontab -l || echo | crontab - >> /dev/null 2>&1
 if [[ "`crontab -l | grep openpetra/backup.sh`" == "" ]]
 then
   pwd=`pwd`

@@ -17,7 +17,7 @@ cd -
 ./restoreDemoDatabase.sh
 
 # install cronjob
-crontab -l || echo | crontab -
+crontab -l || echo | crontab - >> /dev/null 2>&1
 if [[ "`crontab -l | grep openpetra/restoreDemoDatabase.sh`" == "" ]]
 then
   pwd=`pwd`
