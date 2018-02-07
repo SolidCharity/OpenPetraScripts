@@ -26,10 +26,10 @@ echo "stopping $f"
   systemctl disable `basename $f`
 done
 systemctl stop openpetra-server
-systemctl stop lighttpd
+systemctl stop nginx
 systemctl stop mariadb
 
-yum -y remove mariadb lighttpd openpetranow-mysql-test
+yum -y remove mariadb nginx openpetranow-mysql-test
 
 # remove the users
 if [ -d /home/openpetra ]
@@ -41,7 +41,7 @@ do
   userdel -r `basename $d` || exit -1
 done
 
-rm -Rf /etc/lighttpd
+rm -Rf /etc/nginx
 rm -Rf /var/lib/mysql
 rm -Rf /usr/lib/systemd/system/op_*
 
