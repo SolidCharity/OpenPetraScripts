@@ -1,14 +1,7 @@
 #!/bin/bash
 # Author: Timotheus Pokorra <tp@tbits.net>
-# Copyright: 2017 TBits.net
-# Description: reinstall the whole server, loosing all data
-
-if [ -z "$OPENPETRA_URL" ]
-then
-  echo "Please specify the OPENPETRA_URL environment variable!"
-  exit -1
-  export OPENPETRA_URL=demo.openpetra.org
-fi
+# Copyright: 2017-2018 TBits.net
+# Description: reinstall the whole server, losing all data
 
 echo "this script will remove OpenPetra, and DELETE all YOUR data!!!"
 read -p "Are you sure? Type y or Ctrl-C " -r

@@ -1,6 +1,6 @@
 #!/bin/bash
 # Author: Timotheus Pokorra <tp@tbits.net>
-# Copyright: 2017 TBits.net
+# Copyright: 2017-2018 TBits.net
 # Description: create the server for demo.openpetra.org
 
 # setup the instance

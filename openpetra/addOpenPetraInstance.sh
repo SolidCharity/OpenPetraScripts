@@ -1,6 +1,6 @@
 #!/bin/bash
 # Author: Timotheus Pokorra <tp@tbits.net>
-# Copyright: 2017 TBits.net
+# Copyright: 2017-2018 TBits.net
 # Description: add a new OpenPetra instance, creating/overwriting the database
 
 if [ -z "$1" ]
@@ -33,6 +33,7 @@ export customer=$1
 export NAME=op_$customer
 export userName=op_$customer
 export OPENPETRA_URL=$customer.$URL
+export OPENPETRA_HTTP_URL=https://$customer.$URL
 export OPENPETRA_DBHOST=$2
 if [[ "$OPENPETRA_DBHOST" == "localhost" ]]
 then
@@ -46,6 +47,7 @@ else
 fi
 FindFreePort 9000
 export OPENPETRA_PORT=$id
+export OPENPETRA_HTTP_PORT=$((OPENPETRA_PORT-1000))
 # add service
 echo -e "op_$customer\t$OPENPETRA_PORT/tcp\t\t\t# OpenPetra for $customer" >> /etc/services
 
