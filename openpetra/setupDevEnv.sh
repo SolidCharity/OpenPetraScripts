@@ -26,5 +26,10 @@ cat > OpenPetra.build.config <<FINISH
 </project>
 FINISH
 
+// add symbolic link from /usr/local/openpetra/client to /root/openpetra-client-js
+rm -Rf /usr/local/openpetra/client
+ln -s /root/openpetra-client-js /usr/local/openpetra/client
+chmod a+rx /root
+
 echo "now run in ~/openpetra: nant generateSolution install"
 
