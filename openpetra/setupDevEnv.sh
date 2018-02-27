@@ -12,12 +12,20 @@ yum -y install nodejs
 #8.9.4
 #npm --version
 #5.6.0
+npm install -g browserify
+npm install -g uglify-es
 
 cd ~
 
-git clone --depth 10 http://github.com/tbits/openpetra.git -b test
+if [ ! -d openpetra ]
+then
+  git clone --depth 10 http://github.com/tbits/openpetra.git -b test
+fi
 
-git clone https://github.com/openpetra/openpetra-client-js.git
+if [ ! -d openpetra-client-js ]
+then
+  git clone https://github.com/tbits/openpetra-client-js.git -b test
+fi
 
 cd openpetra
 
@@ -33,7 +41,7 @@ cat > OpenPetra.build.config <<FINISH
 </project>
 FINISH
 
-// add symbolic link from /usr/local/openpetra/client to /root/openpetra-client-js
+# add symbolic link from /usr/local/openpetra/client to /root/openpetra-client-js
 rm -Rf /usr/local/openpetra/client
 ln -s /root/openpetra-client-js /usr/local/openpetra/client
 chmod a+rx /root
