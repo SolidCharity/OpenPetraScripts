@@ -6,6 +6,13 @@
 
 yum -y install nant mono-devel
 
+curl --silent --location https://rpm.nodesource.com/setup_8.x  | bash -
+yum -y install nodejs
+#node --version
+#8.9.4
+#npm --version
+#5.6.0
+
 cd ~
 
 git clone --depth 10 http://github.com/tbits/openpetra.git -b test
@@ -30,6 +37,9 @@ FINISH
 rm -Rf /usr/local/openpetra/client
 ln -s /root/openpetra-client-js /usr/local/openpetra/client
 chmod a+rx /root
+
+cd ~/openpetra-client-js
+npm install
 
 echo "now run in ~/openpetra: nant generateSolution install"
 
