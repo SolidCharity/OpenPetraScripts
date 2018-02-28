@@ -29,7 +29,7 @@ fi
 
 cd openpetra
 
-# get the database password from 
+# get the database password from the default server installed by reinstall.sh
 dbpwd=`cat /home/openpetra/etc/PetraServerConsole.config  | grep Server.DBPassword | awk -F\" '{print $4;}'`
 cat > OpenPetra.build.config <<FINISH
 <?xml version="1.0"?>
