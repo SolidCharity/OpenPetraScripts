@@ -12,6 +12,19 @@ yum -y install nodejs
 #8.9.4
 #npm --version
 #5.6.0
+
+# support for corporate http web proxy
+if [ ! -z "$http_proxy" ]
+then
+  # this will write to ~/.npmrc
+  npm config set proxy $http_proxy
+fi
+if [ ! -z "$https_proxy" ]
+then
+  # this will write to ~/.npmrc
+  npm config set https-proxy $https_proxy
+fi
+
 npm install -g browserify
 npm install -g uglify-es
 
