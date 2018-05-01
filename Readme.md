@@ -58,8 +58,11 @@ You can now reach OpenPetra at:
 
 * http://192.168.124.70
 * http://192.168.124.70/api
+* http://192.168.124.70/phpMyAdmin
 
 You can login with user sysadmin and password CHANGEME, or with user demo and password DEMO.
+
+You can run the ./mysql.sh script to get the database username and password, and use phpMyAdmin to browse the database.
 
 You can now edit the client code in /root/openpetra-client-js, run there `npm run build` and refresh your browser.
 

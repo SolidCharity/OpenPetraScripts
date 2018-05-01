@@ -62,5 +62,40 @@ chmod a+rx /root
 cd ~/openpetra-client-js
 npm install
 
+# install phpMyAdmin with PHP7.1
+yum -y install http://rpms.remirepo.net/enterprise/remi-release-7.rpm
+yum -y install yum-utils
+yum-config-manager --enable remi-php71
+yum-config-manager --enable remi
+yum -y install phpMyAdmin php-fpm
+sed -i "s#user = apache#user = nginx#" /etc/php-fpm.d/www.conf
+sed -i "s#group = apache#group = nginx#" /etc/php-fpm.d/www.conf
+sed -i "s#listen = 127.0.0.1:9000#listen = 127.0.0.1:8080#" /etc/php-fpm.d/www.conf
+sed -i "s#;chdir = /var/www#chdir = /usr/share/phpMyAdmin#" /etc/php-fpm.d/www.conf
+chown nginx:nginx /var/lib/php/session
+systemctl enable php-fpm
+systemctl start php-fpm
+if [[ -z "`cat /etc/nginx/conf.d/openpetra.conf | grep phpMyAdmin`" ]];
+then
+  sed -i "s#location / {#location / {\n         rewrite ^/phpmyadmin.*$ /phpMyAdmin redirect;#g" /etc/nginx/conf.d/openpetra.conf
+  sed -i "s#^}##g" /etc/nginx/conf.d/openpetra.conf
+  cat >> /etc/nginx/conf.d/openpetra.conf <<FINISH
+    location /phpMyAdmin {
+         root /usr/share/;
+         index index.php index.html index.htm;
+         location ~ ^/phpMyAdmin/(.+\.php)$ {
+                   root /usr/share/;
+                   fastcgi_pass 127.0.0.1:8080;
+                   fastcgi_index index.php;
+                   include /etc/nginx/fastcgi_params;
+                   fastcgi_param SCRIPT_FILENAME \$document_root\$fastcgi_script_name;
+        }
+    }
+}
+FINISH
+fi
+
+systemctl reload nginx
+
 echo "now run in ~/openpetra: nant generateSolution install"
 
