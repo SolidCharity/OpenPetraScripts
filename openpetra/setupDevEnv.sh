@@ -95,6 +95,9 @@ then
 FINISH
 fi
 
+// behind reverse proxy, add to /etc/phpMyAdmin/config.inc.php
+// $cfg['pma_absolute_uri'] = 'http://localhost:8180/phpMyAdmin';
+
 systemctl reload nginx
 
 echo "now run in ~/openpetra: nant generateSolution install"
