@@ -4,7 +4,7 @@
 # Description: setup a development environment
 #        this assumes that reinstall.sh has been run
 
-yum -y install nant mono-devel
+yum -y install nant mono-devel wget
 
 curl --silent --location https://rpm.nodesource.com/setup_8.x  | bash -
 yum -y install nodejs
@@ -99,6 +99,21 @@ fi
 // $cfg['pma_absolute_uri'] = 'http://localhost:8180/phpMyAdmin';
 
 systemctl reload nginx
+
+
+# download the demo database
+cd /home/openpetra
+wget https://github.com/openpetra/demo-databases/raw/UsedForNUnitTests/demoWith1ledger.yml.gz
+chown openpetra:openpetra demoWith1ledger.yml.gz
+cd -
+
+# install demo database
+file=/home/openpetra/demoWith1ledger.yml.gz
+if [ -f $file ]
+then
+  /usr/bin/openpetra-server loadYmlGz $file || exit -1
+  systemctl restart openpetra-server || exit -1
+fi
 
 echo "now run in ~/openpetra: nant generateSolution install"
 
