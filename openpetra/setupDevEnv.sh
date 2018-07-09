@@ -115,5 +115,14 @@ then
   systemctl restart openpetra-server || exit -1
 fi
 
+# copy web.config for easier debugging
+cat > /usr/local/openpetra/server/web.config <<FINISH
+<configuration>
+    <system.web>
+        <customErrors mode="Off"/>
+    </system.web>
+</configuration>
+FINISH
+
 echo "now run in ~/openpetra: nant generateSolution install"
 
