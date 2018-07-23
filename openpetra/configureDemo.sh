@@ -9,7 +9,7 @@ export URL=openpetra.org
 
 # download the demo database
 cd /home/op_demo
-wget https://github.com/openpetra/demo-databases/raw/UsedForNUnitTests/demoWith1ledger.yml.gz
+wget https://github.com/openpetra/demo-databases/raw/master/demoWith1ledger.yml.gz
 chown op_demo:op_demo demoWith1ledger.yml.gz
 cd -
 
