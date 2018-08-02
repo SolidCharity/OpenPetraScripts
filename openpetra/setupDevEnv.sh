@@ -30,17 +30,30 @@ npm install -g uglify-es
 
 cd ~
 
-if [ ! -d openpetra ]
+if [ ! -z $1 ];
 then
-  git clone --depth 10 http://github.com/tbits/openpetra.git -b test
+  devuser=$1
+  home=/home/$1
+  groupadd developers
+  usermod -G developers,wheel $devuser
+  chmod -R g+rs /usr/local/openpetra/
+  chown -R $devuser:developers /usr/local/openpetra/
+else
+  devuser=root
+  home=/root
 fi
 
-if [ ! -d openpetra-client-js ]
+if [ ! -d $home/openpetra ]
 then
-  git clone https://github.com/tbits/openpetra-client-js.git -b test
+  git clone --depth 10 http://github.com/tbits/openpetra.git -b test $home/openpetra
 fi
 
-cd openpetra
+if [ ! -d $home/openpetra-client-js ]
+then
+  git clone https://github.com/tbits/openpetra-client-js.git -b test $home/openpetra-client-js
+fi
+
+cd $home/openpetra
 
 # get the database password from the default server installed by reinstall.sh
 dbpwd=`cat /home/openpetra/etc/PetraServerConsole.config  | grep Server.DBPassword | awk -F\" '{print $4;}'`
@@ -56,11 +69,15 @@ FINISH
 
 # add symbolic link from /usr/local/openpetra/client to /root/openpetra-client-js
 rm -Rf /usr/local/openpetra/client
-ln -s /root/openpetra-client-js /usr/local/openpetra/client
-chmod a+rx /root
+ln -s $home/openpetra-client-js /usr/local/openpetra/client
+chmod a+rx $home
 
-cd ~/openpetra-client-js
+cd $home/openpetra-client-js
 npm install
+cd $home/openpetra
+nant install.js
+
+chown -R $devuser:$devuser $home
 
 # install phpMyAdmin with PHP7.1
 yum -y install http://rpms.remirepo.net/enterprise/remi-release-7.rpm
@@ -97,6 +114,7 @@ fi
 
 // behind reverse proxy, add to /etc/phpMyAdmin/config.inc.php
 // $cfg['pma_absolute_uri'] = 'http://localhost:8180/phpMyAdmin';
+// On CentOS/Epel7 it is pma_absolute_uri, on Fedora 28 it is PmaAbsoluteUri
 
 systemctl reload nginx
 
