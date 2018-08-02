@@ -87,7 +87,10 @@ yum-config-manager --enable remi
 yum -y install phpMyAdmin php-fpm
 sed -i "s#user = apache#user = nginx#" /etc/php-fpm.d/www.conf
 sed -i "s#group = apache#group = nginx#" /etc/php-fpm.d/www.conf
+# CentOS7:
 sed -i "s#listen = 127.0.0.1:9000#listen = 127.0.0.1:8080#" /etc/php-fpm.d/www.conf
+# Fedora28:
+sed -i "s#listen = /run/php-fpm/www.sock#listen = 127.0.0.1:8080#" /etc/php-fpm.d/www.conf
 sed -i "s#;chdir = /var/www#chdir = /usr/share/phpMyAdmin#" /etc/php-fpm.d/www.conf
 chown nginx:nginx /var/lib/php/session
 systemctl enable php-fpm
