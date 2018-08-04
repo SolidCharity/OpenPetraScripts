@@ -4,7 +4,7 @@
 # Description: setup a development environment
 #        this assumes that reinstall.sh has been run
 
-yum -y install nant mono-devel wget
+yum -y install nant mono-devel wget sudo
 
 curl --silent --location https://rpm.nodesource.com/setup_8.x  | bash -
 yum -y install nodejs
