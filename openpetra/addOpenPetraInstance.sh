@@ -30,7 +30,7 @@ function FindFreePort()
 }
 
 export customer=$1
-export NAME=op_$customer
+export OP_CUSTOMER=op_$customer
 export userName=op_$customer
 export OPENPETRA_URL=$customer.$URL
 export OPENPETRA_HTTP_URL=https://$customer.$URL

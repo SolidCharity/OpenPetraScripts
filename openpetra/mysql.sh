@@ -12,16 +12,6 @@ then
   customer="openpetra"
 fi
 
-path=/home/op-$customer/etc
-if [ ! -d $path ]
-then
-  path=/home/$customer/etc
-fi
+export CUSTOMER=$customer
 
-export DBHost=`cat $path/PetraServerConsole.config | grep DBHostOrFile | awk -F'"' '{print $4}'`
-export DBUser=`cat $path/PetraServerConsole.config | grep DBUserName | awk -F'"' '{print $4}'`
-export DBName=`cat $path/PetraServerConsole.config | grep DBName | awk -F'"' '{print $4}'`
-export DBPort=`cat $path/PetraServerConsole.config | grep DBPort | awk -F'"' '{print $4}'`
-export DBPwd=`cat $path/PetraServerConsole.config | grep DBPassword | awk -F'"' '{print $4}'`
-echo 'call: mysql -u $DBUser -h $DBHost --port=$DBPort --password="$DBPwd" $DBName --default-character-set=utf8'
-echo " or visit http://localhost/phpMyAdmin, with user $DBUser and password $DBPwd"
+. /usr/bin/openpetra-server mysql
