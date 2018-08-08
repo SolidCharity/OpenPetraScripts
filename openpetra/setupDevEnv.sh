@@ -133,7 +133,7 @@ file=/home/openpetra/demoWith1ledger.yml.gz
 if [ -f $file ]
 then
   /usr/bin/openpetra-server loadYmlGz $file || exit -1
-  systemctl restart openpetra-server || exit -1
+  systemctl restart openpetra || exit -1
 fi
 
 # copy web.config for easier debugging
