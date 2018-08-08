@@ -12,6 +12,6 @@ then
   customer="openpetra"
 fi
 
-export CUSTOMER=$customer
+export OP_CUSTOMER=$customer
 
-. /usr/bin/openpetra-server mysql
+/usr/bin/openpetra-server mysql
