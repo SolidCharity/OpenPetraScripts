@@ -22,6 +22,8 @@ function restart {
   fi
 }
 
+systemctl daemon-reload
+
 if [[ "$1" == "all" ]]
 then
   for d in /home/openpetra /home/op_*
