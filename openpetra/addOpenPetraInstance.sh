@@ -6,7 +6,7 @@
 if [ -z "$1" ]
 then
   echo "call: URL=<domain> $0 <customer> localhost"
-  echo "call: URL=<domain> $0 <customer> <dbhost> <dbname> <dbuser> <dbpwd>"
+  echo "call: URL=<domain> $0 <customer> <dbhost> <dbname> <dbuser> <dbpwd> <sysadminpwd>"
   exit -1
 fi
 
@@ -40,10 +40,12 @@ then
   export OPENPETRA_DBNAME=op_$customer
   export OPENPETRA_DBUSER=op_$customer
   export OPENPETRA_DBPWD=`openpetra-server generatepwd`
+  export SYSADMIN_PWD=`openpetra-server generatepwd`
 else
   export OPENPETRA_DBNAME=$3
   export OPENPETRA_DBUSER=$4
   export OPENPETRA_DBPWD=$5
+  export SYSADMIN_PWD=$6
 fi
 FindFreePort 9000
 export OPENPETRA_PORT=$id
