@@ -32,8 +32,8 @@ function FindFreePort()
 export customer=$1
 export OP_CUSTOMER=op_$customer
 export userName=op_$customer
-export OPENPETRA_URL=$customer.$URL
-export OPENPETRA_HTTP_URL=https://$customer.$URL
+export OPENPETRA_URL=op_$customer.$URL
+export OPENPETRA_HTTP_URL=https://op_$customer.$URL
 export OPENPETRA_DBHOST=$2
 if [[ "$OPENPETRA_DBHOST" == "localhost" ]]
 then
@@ -55,3 +55,6 @@ echo -e "op_$customer\t$OPENPETRA_PORT/tcp\t\t\t# OpenPetra for $customer" >> /e
 
 openpetra-server init || exit -1
 openpetra-server initdb || exit -1
+
+echo "make sure you have configured the tunnel for the web access: "
+echo "./initWebproxy.sh 150 $OPENPETRA_URL dummy $OPENPETRA_HTTP_PORT"
