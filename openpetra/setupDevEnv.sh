@@ -6,6 +6,8 @@
 
 yum -y install nant mono-devel wget sudo
 
+wget https://github.com/Holger-Will/code-128-font/raw/master/fonts/code128.ttf -O /usr/share/fonts/code128.ttf
+
 curl --silent --location https://rpm.nodesource.com/setup_8.x  | bash -
 yum -y install nodejs
 #node --version
