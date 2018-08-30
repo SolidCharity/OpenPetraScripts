@@ -30,7 +30,8 @@ then
   do
     if [ -d $d ]
     then
-      restart `basename $d`
+      service=`basename $d`
+      echo $service && systemctl is-enabled $service && systemctl restart $service
     fi
   done
 else
