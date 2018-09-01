@@ -17,23 +17,26 @@ function restart {
 
   if [ -f /usr/lib/systemd/system/$customer.service ]
   then
-    echo "restarting $customer"
-    systemctl restart $1
+    if [ `systemctl is-enabled $customer` ]
+    then
+      echo "restarting $customer"
+      systemctl restart $customer
+    fi
   fi
 }
 
 systemctl daemon-reload
 
-if [[ "$1" == "all" ]]
+if [[ "$customer" == "all" ]]
 then
   for d in /home/openpetra /home/op_*
   do
     if [ -d $d ]
     then
       service=`basename $d`
-      echo $service && systemctl is-enabled $service && systemctl restart $service
+      restart $service
     fi
   done
 else
-  restart $1
+  restart $customer
 fi
