@@ -17,7 +17,7 @@ function restart {
 
   if [ -f /usr/lib/systemd/system/$customer.service ]
   then
-    if [ `systemctl is-enabled $customer` ]
+    if [[ "`systemctl is-enabled $customer`" == "enabled" ]]
     then
       echo "restarting $customer"
       systemctl restart $customer
