@@ -6,6 +6,22 @@
 
 yum -y install nant mono-devel wget sudo
 
+# for selenium tests
+yum -y install bzip2 python-setuptools python-unittest2 Xvfb python2-pip gtk3 dbus-glib
+pip install selenium pyvirtualdisplay || exit 1
+
+# download latest firefox and geckodriver
+mkdir /usr/local/testenv
+cd /usr/local/testenv
+wget --tries=3 https://download-installer.cdn.mozilla.net/pub/firefox/releases/57.0/linux-x86_64/en-US/firefox-57.0.tar.bz2 || exit -1
+tar xjf firefox-57.0.tar.bz2
+ln -s `pwd`/firefox/firefox /usr/bin/firefox
+wget --tries=3 https://github.com/mozilla/geckodriver/releases/download/v0.19.1/geckodriver-v0.19.1-linux64.tar.gz || exit -1
+tar xzf geckodriver-v0.19.1-linux64.tar.gz
+ln -s `pwd`/geckodriver /usr/bin/geckodriver
+cd -
+
+# for printing bar codes
 wget https://github.com/Holger-Will/code-128-font/raw/master/fonts/code128.ttf -O /usr/share/fonts/code128.ttf
 
 curl --silent --location https://rpm.nodesource.com/setup_8.x  | bash -
