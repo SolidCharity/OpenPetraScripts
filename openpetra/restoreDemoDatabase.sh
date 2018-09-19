@@ -6,7 +6,7 @@
 file=/home/op_demo/demoWith1ledger.yml.gz
 if [ -f $file ]
 then
-  userName=op_demo NAME=op_demo /usr/bin/openpetra-server loadYmlGz $file || exit -1
+  OP_CUSTOMER=op_demo /usr/bin/openpetra-server loadYmlGz $file || exit -1
   systemctl restart op_demo || exit -1
 fi
 
