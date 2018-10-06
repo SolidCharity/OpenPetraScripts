@@ -6,9 +6,8 @@
 
 yum -y install nant mono-devel wget sudo
 
-# for selenium tests
-yum -y install bzip2 python-setuptools python-unittest2 Xvfb python2-pip gtk3 dbus-glib
-pip install selenium pyvirtualdisplay || exit 1
+# for cypress tests
+yum -y install libXScrnSaver GConf2 Xvfb
 
 # download latest firefox and geckodriver
 mkdir /usr/local/testenv
@@ -45,6 +44,7 @@ fi
 
 npm install -g browserify
 npm install -g uglify-es
+npm install cypress
 
 cd ~
 
