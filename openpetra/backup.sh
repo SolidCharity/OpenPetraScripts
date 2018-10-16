@@ -14,13 +14,13 @@ customer=$1
 
 function backupdb {
   customer=$1
-  . `dirname $0`/mysql.sh $customer
   path=/home/op-$customer/backup
   if [ ! -d $path ]
   then
     path=/home/$customer/backup
   fi
-  mysqldump -u $DBUser -h $DBHost --port=$DBPort --password="$DBPwd" $DBName | gzip > $path/mysql-`date +%Y%m%d`.sql.gz
+  export OP_CUSTOMER=$customer
+  /usr/bin/openpetra-server backup $path/mysql-`date +%Y%m%d`.sql.gz
   echo "backup stored to" $path/mysql-`date +%Y%m%d`.sql.gz
   rm -f $path/mysql-`date --date='5 days ago' +%Y%m%d`.sql*
   rm -f $path/mysql-`date --date='6 days ago' +%Y%m%d`.sql*
