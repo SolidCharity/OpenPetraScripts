@@ -44,7 +44,7 @@ mv /etc/services.new /etc/services
 
 # enable the repo
 cd /etc/yum.repos.d
-repourl=https://lbs.tbits.net/repos/tbits.net/openpetra/centos/7/lbs-tbits.net-openpetra.repo
+repourl=https://lbs.solidcharity.com/repos/tpokorra/openpetra/centos/7/lbs-tpokorra-openpetra.repo
 if [ ! -f `basename $repourl` ]
 then
   curl -L $repourl -o `basename $repourl`

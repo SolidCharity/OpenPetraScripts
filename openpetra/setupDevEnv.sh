@@ -63,12 +63,12 @@ fi
 
 if [ ! -d $home/openpetra ]
 then
-  git clone --depth 10 http://github.com/tbits/openpetra.git -b test $home/openpetra
+  git clone --depth 10 http://github.com/openpetra/openpetra.git -b test $home/openpetra
 fi
 
 if [ ! -d $home/openpetra-client-js ]
 then
-  git clone https://github.com/tbits/openpetra-client-js.git -b test $home/openpetra-client-js
+  git clone https://github.com/openpetra/openpetra-client-js.git -b test $home/openpetra-client-js
 fi
 
 cd $home/openpetra

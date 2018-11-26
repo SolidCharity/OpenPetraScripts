@@ -4,8 +4,8 @@
 # Description: disable automatic updates, and run the update
 # if a customer or all is specified, the database updates are run.
 
-sed -i "s/^enabled=.*/enabled=0/g" /etc/yum.repos.d/lbs-tbits.net-openpetra.repo
-yum --enablerepo=lbs-tbits.net-openpetra update
+sed -i "s/^enabled=.*/enabled=0/g" /etc/yum.repos.d/lbs-tpokorra-openpetra.repo
+yum --enablerepo=lbs-tpokorra-openpetra update
 
 customer=$1
 
