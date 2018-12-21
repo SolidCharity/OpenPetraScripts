@@ -64,5 +64,8 @@ echo -e "op_$customer\t$OPENPETRA_PORT/tcp\t\t\t# OpenPetra for $customer" >> /e
 openpetra-server init || exit -1
 openpetra-server initdb || exit -1
 
+# restart the instance to clean up the RAM
+systemctl restart op_$customer
+
 echo "make sure you have configured the tunnel for the web access: "
 echo "./initWebproxy.sh 150 $OPENPETRA_URL dummy $OPENPETRA_HTTP_PORT"
