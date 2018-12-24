@@ -32,6 +32,7 @@ function set_smtp {
       sed -i 's/"SmtpPassword" value=".*"/"SmtpPassword" value="'$SMTP_PWD'"/g' $cfgfile
       sed -i 's/"SmtpEnableSsl" value=".*"/"SmtpEnableSsl" value="'true'"/g' $cfgfile
       sed -i 's/"SmtpAuthenticationType" value=".*"/"SmtpAuthenticationType" value="'config'"/g' $cfgfile
+      sed -i 's/"IgnoreServerCertificateValidation" value=".*"/"IgnoreServerCertificateValidation" value="'true'"/g' $cfgfile
 
       echo "restarting $customer"
       systemctl restart $customer
