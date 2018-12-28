@@ -38,6 +38,7 @@ export customer=$1
 export OP_CUSTOMER=op_$customer
 export userName=op_$customer
 export OPENPETRA_URL=op$customer.$URL
+export OPENPETRA_EMAILDOMAIN=$URL
 export OPENPETRA_HTTP_URL=https://op$customer.$URL
 export OPENPETRA_DBHOST=$2
 if [[ "$OPENPETRA_DBHOST" == "localhost" ]]
