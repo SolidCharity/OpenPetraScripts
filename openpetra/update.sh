@@ -4,7 +4,14 @@
 # Description: disable automatic updates, and run the update
 # if a customer or all is specified, the database updates are run.
 
-sed -i "s/^enabled=.*/enabled=0/g" /etc/yum.repos.d/lbs-solidcharity-openpetra.repo
+repofile=/etc/yum.repos.d/lbs-solidcharity-openpetra.repo
+sed -i "s/^enabled =.*/enabled = 0/g" $repofile
+sed -i "s/^enabled=.*/enabled = 0/g" $repofile
+# if line does not exist:
+if ! grep -q '^enabled' $repofile
+then
+  sed -i 's#gpgcheck#enabled = 0\ngpgcheck#g' $repofile
+fi
 yum --enablerepo=lbs-solidcharity-openpetra update
 
 customer=$1

@@ -30,7 +30,7 @@ function set_config {
 
       # add new line
       # grep -q returns 0 if text was found
-      if [ `cat $cfgfile | grep -q 'Server.EmailDomain'` ]
+      if ! grep -q 'Server.EmailDomain' $cfgfile ; then
       then
         sed -i 's#    <add key="ApplicationDirectory"#    <add key="Server.EmailDomain" value="openpetra.com"/>\n    <add key="ApplicationDirectory"#g' $cfgfile
       fi
