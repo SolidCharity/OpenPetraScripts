@@ -10,11 +10,11 @@ then
 fi
 
 customer=$1
-path=/home/op-$customer/etc
+export OP_CUSTOMER=$customer
+path=/home/$OP_CUSTOMER/etc
 if [ ! -d $path ]
 then
-  path=/home/$customer/etc
-  customer=op_$customer
+  export OP_CUSTOMER=op_$customer
 fi
 
-NAME="$customer" userName="$customer" openpetra-server menu
+openpetra-server menu
