@@ -38,6 +38,7 @@ then
     if [ -d $d ]
     then
       service=`basename $d`
+      echo "run for $service..."
       run_mysql $service
     fi
   done
