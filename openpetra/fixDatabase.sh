@@ -44,3 +44,6 @@ then
 else
   run_mysql $customer
 fi
+
+echo
+echo "Please remember to reset the MYSQL_CMD environment variable! export MYSQL_CMD="
