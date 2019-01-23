@@ -1,6 +1,7 @@
 #!/bin/bash
 # Author: Timotheus Pokorra <tp@tbits.net>
 # Copyright: 2017-2018 TBits.net
+# Copyright: 2019 SolidCharity.com
 # Description: add a new OpenPetra instance, creating/overwriting the database
 
 if [ -z "$1" ]
@@ -64,6 +65,12 @@ echo -e "op_$customer\t$OPENPETRA_PORT/tcp\t\t\t# OpenPetra for $customer" >> /e
 
 openpetra-server init || exit -1
 openpetra-server initdb || exit -1
+
+if [ ! -z "$AUTHTOKENINIT" ]
+then
+  cfgfile="/home/op_$customer/etc/PetraServerConsole.config"
+  sed -i "s#    <add key=\"ApplicationDirectory\"#    <add key=\"AuthTokenForInitialisation\" value=\"$AUTHTOKENINIT\"/>\n    <add key=\"ApplicationDirectory\"#g" $cfgfile
+fi
 
 # restart the instance to clean up the RAM
 systemctl restart op_$customer
