@@ -84,3 +84,12 @@ Setup the demo.openpetra.org
     systemctl disable openpetra-server
     systemctl status op_demo
 
+Fix all databases
+-----------------
+
+If something is wrong, even in a database upgrade, you do it like in this example:
+
+    export MYSQL_CMD="CREATE TABLE s_session (   s_session_id_c varchar(128) NOT NULL,   s_valid_until_d datetime NOT NULL,   s_session_values_c text,   s_date_created_d date,   s_created_by_c varchar(20),   s_date_modified_d date,   s_modified_by_c varchar(20),   s_modification_id_t timestamp,   CONSTRAINT s_session_pk     PRIMARY KEY (s_session_id_c) ) ENGINE=InnoDB CHARACTER SET UTF8;"
+    ./fixDatabase.sh all
+    export MYSQL_CMD="UPDATE s_system_defaults SET s_default_value_c = '2019.6.0.0' WHERE s_default_code_c = 'CurrentDatabaseVersion';"
+    ./fixDatabase.sh all
