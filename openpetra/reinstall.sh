@@ -55,7 +55,7 @@ yum clean all
 yum -y install epel-release
 
 # install Copr repository for Mono >= 5.10
-su -c 'curl https://copr.fedorainfracloud.org/coprs/tpokorra/mono-5.16/repo/epel-7/tpokorra-mono-5.16-epel-7.repo | tee /etc/yum.repos.d/tpokorra-mono5.repo'
+su -c 'curl https://copr.fedorainfracloud.org/coprs/tpokorra/mono-5.18/repo/epel-7/tpokorra-mono-5.18-epel-7.repo | tee /etc/yum.repos.d/tpokorra-mono5.repo'
 
 yum -y install https://downloads.wkhtmltopdf.org/0.12/0.12.5/wkhtmltox-0.12.5-1.centos7.x86_64.rpm
 yum -y install openpetranow-mysql-test || exit -1
