@@ -20,11 +20,11 @@ function backupdb {
     path=/home/$customer/backup
   fi
   export OP_CUSTOMER=$customer
-  /usr/bin/openpetra-server backup $path/mysql-`date +%Y%m%d`.sql.gz
-  echo "backup stored to" $path/mysql-`date +%Y%m%d`.sql.gz
-  rm -f $path/mysql-`date --date='5 days ago' +%Y%m%d`.sql*
-  rm -f $path/mysql-`date --date='6 days ago' +%Y%m%d`.sql*
-  rm -f $path/mysql-`date --date='7 days ago' +%Y%m%d`.sql*
+  /usr/bin/openpetra-server backup $path/mysql-`date +%Y%m%d%H`.sql.gz
+  echo "backup stored to" $path/mysql-`date +%Y%m%d%H`.sql.gz
+  rm -f $path/mysql-`date --date='5 days ago' +%Y%m%d`*.sql.gz
+  rm -f $path/mysql-`date --date='6 days ago' +%Y%m%d`*.sql.gz
+  rm -f $path/mysql-`date --date='7 days ago' +%Y%m%d`*.sql.gz
 }
 
 if [[ "$1" == "all" ]]
