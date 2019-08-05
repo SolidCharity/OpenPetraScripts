@@ -55,11 +55,6 @@ then
   git clone --depth 10 http://github.com/openpetra/openpetra.git -b test $home/openpetra
 fi
 
-if [ ! -d $home/openpetra-client-js ]
-then
-  git clone https://github.com/openpetra/openpetra-client-js.git -b test $home/openpetra-client-js
-fi
-
 cd $home/openpetra
 
 # get the database password from the default server installed by reinstall.sh
@@ -74,15 +69,15 @@ cat > OpenPetra.build.config <<FINISH
 </project>
 FINISH
 
-# add symbolic link from /usr/local/openpetra/client to /root/openpetra-client-js
+# add symbolic link from /usr/local/openpetra/client to /root/openpetra/js-client
 # and the same for the reports
 rm -Rf /usr/local/openpetra/client
 rm -Rf /usr/local/openpetra/reports
-ln -s $home/openpetra-client-js /usr/local/openpetra/client
+ln -s $home/openpetra/js-client /usr/local/openpetra/client
 ln -s $home/openpetra/XmlReports /usr/local/openpetra/reports
 chmod a+rx $home
 
-cd $home/openpetra-client-js
+cd $home/openpetra/js-client
 npm install
 cd $home/openpetra
 nant install.js
