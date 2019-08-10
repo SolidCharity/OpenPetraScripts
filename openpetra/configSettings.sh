@@ -34,6 +34,10 @@ function set_config {
       then
         sed -i 's#    <add key="ApplicationDirectory"#    <add key="Server.EmailDomain" value="openpetra.com"/>\n    <add key="ApplicationDirectory"#g' $cfgfile
       fi
+      if ! grep -q 'LicenseCheck.Url' $cfgfile
+      then
+        sed -i 's#    <add key="ApplicationDirectory"#    <add key="LicenseCheck.Url" value="https://www.openpetra.com/api/validate.php?instance_number="/>\n    <add key="ApplicationDirectory"#g' $cfgfile
+      fi
 
       echo "restarting $customer"
       systemctl restart $customer
