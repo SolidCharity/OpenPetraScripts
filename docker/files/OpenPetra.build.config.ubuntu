@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<project name="OpenPetra-userconfig">
+    <property name="DBMS.Type" value="mysql"/>
+    <property name="DBMS.Password" value="ThisIsJustForDevelopment1234"/>
+    <property name="Server.Port" value="9000"/>
+    <property name="Server.DebugLevel" value="1"/>
+</project>

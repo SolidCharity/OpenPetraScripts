@@ -45,17 +45,21 @@ RUN cp /root/.openpetra/setup/petra0300/linuxserver/mysql/centos/openpetra-serve
 RUN cp /root/.openpetra/setup/petra0300/linuxserver/mysql/centos/openpetra-server.sh /usr/bin/openpetra-server && chmod a+x /usr/bin/openpetra-server
 RUN cp /root/.openpetra/setup/petra0300/linuxserver/PetraServerConsole.config /usr/local/openpetra/etc/
 RUN cp /root/.openpetra/setup/petra0300/linuxserver/PetraServerAdminConsole.config /usr/local/openpetra/etc/
+
 RUN ln -s /root/openpetra/js-client /usr/local/openpetra/client
 RUN ln -s /root/openpetra/XmlReports /usr/local/openpetra/reports
 RUN chmod a+rx /root
 
-COPY files/OpenPetra.build.config /root/.openpetra
+COPY files/OpenPetra.build.config.fedora /root/.openpetra/OpenPetra.build.config
 COPY files/web.config /usr/local/openpetra/server/web.config
 COPY files/init.sh /root
 
 RUN chmod a+x /root/init.sh
 
-RUN cd /root/.openpetra && nant generateSolution 
+RUN cd /root/.openpetra && nant generateSolution
+RUN cd /root/.openpetra && nant createSQLStatements
+
+RUN cp /root/.openpetra/delivery/db/*.sql /usr/local/openpetra/db/
 
 # set the initial password for root
 RUN echo "CHANGEME" | passwd root --stdin
