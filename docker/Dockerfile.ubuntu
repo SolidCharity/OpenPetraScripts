@@ -1,0 +1,72 @@
+FROM ubuntu:18.04
+ENV container docker
+
+RUN apt-get update && apt-get install -y openssh-server
+RUN mkdir /var/run/sshd
+
+# SSH login fix. Otherwise user is kicked off after login
+RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
+
+ENV NOTVISIBLE "in users profile"
+RUN echo "export VISIBLE=now" >> /etc/profile
+
+# get the latest mono packages from Microsoft
+RUN apt-get -y install gnupg ca-certificates
+RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF
+RUN echo "deb https://download.mono-project.com/repo/ubuntu stable-bionic main" | tee /etc/apt/sources.list.d/mono-official-stable.list
+RUN apt-get update -o Dir::Etc::sourcelist="sources.list.d/mono-official-stable.list" -o Dir::Etc::sourceparts="-" -o APT::Get::List-Cleanup="0"
+RUN apt-get -y install mono-devel mono-runtime
+
+RUN apt-get -y install nant nunit-console libsodium23 mono-xsp4 wget xfonts-75dpi
+RUN apt-get -y install mariadb-server nginx wget curl tar sqlite gettext git unzip
+
+# to avoid errors like: error CS0433: The imported type `System.CodeDom.Compiler.CompilerError' is defined multiple times
+#RUN rm -f /usr/lib/mono/4.5-api/System.dll
+
+RUN apt-get -y install fontconfig xfonts-base
+RUN wget --quiet https://downloads.wkhtmltopdf.org/0.12/0.12.5/wkhtmltox_0.12.5-1.bionic_amd64.deb && dpkg -i wkhtmltox_0.12.5-1.bionic_amd64.deb && rm wkhtmltox_0.12.5-1.bionic_amd64.deb
+
+RUN apt-get -y install nodejs npm
+RUN cd /root && npm install -g browserify --quiet && npm install -g uglify-es --quiet
+# reduce the size of the docker image
+RUN apt-get clean all
+
+# for printing bar codes
+RUN wget --quiet https://github.com/Holger-Will/code-128-font/raw/master/fonts/code128.ttf -O /usr/share/fonts/truetype/code128.ttf
+# for printing reports to PDF with wkhtmltopdf, we need an older version of Bootstrap
+RUN cd /root && wget --quiet https://github.com/twbs/bootstrap/releases/download/v4.0.0/bootstrap-4.0.0-dist.zip && mkdir -p /usr/local/openpetra/bootstrap-4.0 && unzip -q bootstrap-4.0.0-dist.zip -d /usr/local/openpetra/bootstrap-4.0 && rm bootstrap-4.0.0-dist.zip
+
+RUN cd /root && git clone https://github.com/openpetra/openpetra.git -b test --depth 50 .openpetra
+
+# set CI=1 to avoid too much output from installing cypress. see https://github.com/cypress-io/cypress/issues/1243#issuecomment-365560861
+RUN cd /root/.openpetra/js-client && CI=1 npm install --quiet
+
+RUN mkdir -p /usr/local/openpetra/bin
+RUN mkdir -p /usr/local/openpetra/server
+RUN mkdir -p /usr/local/openpetra/etc
+# TODO use debian/ubuntu specific files?
+RUN cp /root/.openpetra/setup/petra0300/linuxserver/mysql/centos/openpetra-server.service /lib/systemd/system/openpetra.service
+RUN cp /root/.openpetra/setup/petra0300/linuxserver/mysql/centos/openpetra-server.sh /usr/bin/openpetra-server && chmod a+x /usr/bin/openpetra-server
+RUN cp /root/.openpetra/setup/petra0300/linuxserver/PetraServerConsole.config /usr/local/openpetra/etc/
+RUN cp /root/.openpetra/setup/petra0300/linuxserver/PetraServerAdminConsole.config /usr/local/openpetra/etc/
+RUN ln -s /root/openpetra/js-client /usr/local/openpetra/client
+RUN ln -s /root/openpetra/XmlReports /usr/local/openpetra/reports
+RUN chmod a+rx /root
+
+COPY files/OpenPetra.build.config /root/.openpetra
+COPY files/web.config /usr/local/openpetra/server/web.config
+COPY files/init.sh /root
+
+RUN chmod a+x /root/init.sh
+
+RUN cd ./openpetra && nant generateSolution 
+
+# set the initial password for root
+RUN echo "CHANGEME" | passwd root --stdin
+
+VOLUME [ "/sys/fs/cgroup" ]
+
+EXPOSE 22
+EXPOSE 80
+
+CMD [ "/sbin/init" ]

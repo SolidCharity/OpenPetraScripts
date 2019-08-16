@@ -1,0 +1,68 @@
+FROM fedora:30
+ENV container docker
+RUN dnf -y install net-tools openssh-server glibc-locale-source passwd
+RUN mkdir /var/run/sshd
+
+# create host ssh key
+RUN ssh-keygen -t rsa -f /etc/ssh/ssh_host_rsa_key -N ''
+
+# SSH login fix. Otherwise user is kicked off after login
+RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
+
+ENV NOTVISIBLE "in users profile"
+RUN echo "export VISIBLE=now" >> /etc/profile
+
+RUN systemctl enable sshd
+
+RUN dnf -y install liberation-fonts liberation-fonts-common liberation-mono-fonts liberation-narrow-fonts liberation-serif-fonts liberation-sans-fonts
+RUN dnf -y install mono-devel libgdiplus-devel xsp mono-mvc mono-data mono-data-sqlite nant xsp
+RUN dnf -y install mariadb-server nginx wget curl tar sqlite gettext libsodium git unzip
+RUN dnf -y install phpmyadmin php-cli 
+RUN dnf -y install https://downloads.wkhtmltopdf.org/0.12/0.12.5/wkhtmltox-0.12.5-1.centos7.x86_64.rpm
+# for cypress tests
+RUN dnf -y install libXScrnSaver GConf2 Xvfb
+# for client
+#RUN curl --silent --location https://rpm.nodesource.com/setup_8.x  | bash -
+RUN dnf -y install nodejs
+RUN cd /root && npm install -g browserify --quiet && npm install -g uglify-es --quiet
+# reduce the size of the docker image
+RUN dnf clean all
+
+# for printing bar codes
+RUN wget --quiet https://github.com/Holger-Will/code-128-font/raw/master/fonts/code128.ttf -O /usr/share/fonts/code128.ttf
+# for printing reports to PDF with wkhtmltopdf, we need an older version of Bootstrap
+RUN cd /root && wget --quiet https://github.com/twbs/bootstrap/releases/download/v4.0.0/bootstrap-4.0.0-dist.zip && mkdir -p /usr/local/openpetra/bootstrap-4.0 && unzip -q bootstrap-4.0.0-dist.zip -d /usr/local/openpetra/bootstrap-4.0 && rm bootstrap-4.0.0-dist.zip
+
+RUN cd /root && git clone https://github.com/openpetra/openpetra.git -b test --depth 50 .openpetra
+
+# set CI=1 to avoid too much output from installing cypress. see https://github.com/cypress-io/cypress/issues/1243#issuecomment-365560861
+RUN cd /root/.openpetra/js-client && CI=1 npm install --quiet
+
+RUN mkdir -p /usr/local/openpetra/bin
+RUN mkdir -p /usr/local/openpetra/server
+RUN mkdir -p /usr/local/openpetra/etc
+RUN cp /root/.openpetra/setup/petra0300/linuxserver/mysql/centos/openpetra-server.service /usr/lib/systemd/system/openpetra.service
+RUN cp /root/.openpetra/setup/petra0300/linuxserver/mysql/centos/openpetra-server.sh /usr/bin/openpetra-server && chmod a+x /usr/bin/openpetra-server
+RUN cp /root/.openpetra/setup/petra0300/linuxserver/PetraServerConsole.config /usr/local/openpetra/etc/
+RUN cp /root/.openpetra/setup/petra0300/linuxserver/PetraServerAdminConsole.config /usr/local/openpetra/etc/
+RUN ln -s /root/openpetra/js-client /usr/local/openpetra/client
+RUN ln -s /root/openpetra/XmlReports /usr/local/openpetra/reports
+RUN chmod a+rx /root
+
+COPY files/OpenPetra.build.config /root/.openpetra
+COPY files/web.config /usr/local/openpetra/server/web.config
+COPY files/init.sh /root
+
+RUN chmod a+x /root/init.sh
+
+RUN cd /root/.openpetra && nant generateSolution 
+
+# set the initial password for root
+RUN echo "CHANGEME" | passwd root --stdin
+
+VOLUME [ "/sys/fs/cgroup" ]
+
+EXPOSE 22
+EXPOSE 80
+
+CMD [ "/sbin/init" ]
