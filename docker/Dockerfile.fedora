@@ -33,6 +33,10 @@ RUN wget --quiet https://github.com/Holger-Will/code-128-font/raw/master/fonts/c
 # for printing reports to PDF with wkhtmltopdf, we need an older version of Bootstrap
 RUN cd /root && wget --quiet https://github.com/twbs/bootstrap/releases/download/v4.0.0/bootstrap-4.0.0-dist.zip && mkdir -p /usr/local/openpetra/bootstrap-4.0 && unzip -q bootstrap-4.0.0-dist.zip -d /usr/local/openpetra/bootstrap-4.0 && rm bootstrap-4.0.0-dist.zip
 
+RUN wget --quiet https://github.com/openpetra/demo-databases/raw/UsedForNUnitTests/demoWith1ledger.yml.gz -O /root/demoWith1ledger.yml.gz
+
+RUN export DOWNLOAD_LATEST_OPENPETRA=2019.07b
+
 RUN cd /root && git clone https://github.com/openpetra/openpetra.git -b test --depth 50 .openpetra
 
 # set CI=1 to avoid too much output from installing cypress. see https://github.com/cypress-io/cypress/issues/1243#issuecomment-365560861
@@ -41,25 +45,16 @@ RUN cd /root/.openpetra/js-client && CI=1 npm install --quiet
 RUN mkdir -p /usr/local/openpetra/bin
 RUN mkdir -p /usr/local/openpetra/server
 RUN mkdir -p /usr/local/openpetra/etc
-RUN cp /root/.openpetra/setup/petra0300/linuxserver/mysql/centos/openpetra-server.service /usr/lib/systemd/system/openpetra.service
-RUN cp /root/.openpetra/setup/petra0300/linuxserver/mysql/centos/openpetra-server.sh /usr/bin/openpetra-server && chmod a+x /usr/bin/openpetra-server
-RUN cp /root/.openpetra/setup/petra0300/linuxserver/PetraServerConsole.config /usr/local/openpetra/etc/
-RUN cp /root/.openpetra/setup/petra0300/linuxserver/PetraServerAdminConsole.config /usr/local/openpetra/etc/
-
-RUN ln -s /root/openpetra/js-client /usr/local/openpetra/client
-RUN ln -s /root/openpetra/XmlReports /usr/local/openpetra/reports
-RUN chmod a+rx /root
+RUN mkdir -p /usr/local/openpetra/db
 
 COPY files/OpenPetra.build.config.fedora /root/.openpetra/OpenPetra.build.config
 COPY files/web.config /usr/local/openpetra/server/web.config
-COPY files/init.sh /root
-
-RUN chmod a+x /root/init.sh
 
 RUN cd /root/.openpetra && nant generateSolution
 RUN cd /root/.openpetra && nant createSQLStatements
 
-RUN cp /root/.openpetra/delivery/db/*.sql /usr/local/openpetra/db/
+COPY files/init.sh /root
+RUN chmod a+x /root/init.sh
 
 # set the initial password for root
 RUN echo "CHANGEME" | passwd root --stdin

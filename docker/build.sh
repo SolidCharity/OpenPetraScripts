@@ -12,4 +12,4 @@ image=openpetra-dev.$typeOfOS
 name=openpetra-dev.$typeOfOS
 sudo docker build -t $image -f Dockerfile.$typeOfOS .
 
-echo "now run install.sh"
+echo "now run ./install.sh"

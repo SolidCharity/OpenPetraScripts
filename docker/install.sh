@@ -21,7 +21,11 @@ mount="$mountWorkingDirectory $mountcgroup"
 tmp="-d --tmpfs /tmp --tmpfs /run"
 sudo docker run --name $name $tmp $mount -p $sshport:22 -p $httpport:80 -h $name -d -t -i $image || exit -1
 ssh-keygen -f "$HOME/.ssh/known_hosts" -R "[localhost]:$sshport"
+echo
+echo
 echo "Login with initial password for root: CHANGEME"
 echo "first step: ./init.sh"
+echo
+echo
 sleep 5
 ssh -p 2008 root@localhost
