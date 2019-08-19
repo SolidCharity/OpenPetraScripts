@@ -36,19 +36,21 @@ RUN wget --quiet https://github.com/Holger-Will/code-128-font/raw/master/fonts/c
 # for printing reports to PDF with wkhtmltopdf, we need an older version of Bootstrap
 RUN cd /root && wget --quiet https://github.com/twbs/bootstrap/releases/download/v4.0.0/bootstrap-4.0.0-dist.zip && mkdir -p /usr/local/openpetra/bootstrap-4.0 && unzip -q bootstrap-4.0.0-dist.zip -d /usr/local/openpetra/bootstrap-4.0 && rm bootstrap-4.0.0-dist.zip
 
-RUN wget --quiet https://github.com/openpetra/demo-databases/raw/UsedForNUnitTests/demoWith1ledger.yml.gz -O /root/demoWith1ledger.yml.gz
+RUN mkdir -p /usr/local/openpetra/bin
+RUN mkdir -p /usr/local/openpetra/server
+RUN mkdir -p /usr/local/openpetra/etc
+RUN mkdir -p /usr/local/openpetra/db
 
 RUN export DOWNLOAD_LATEST_OPENPETRA=2019.07b
+
+RUN wget --quiet https://github.com/openpetra/demo-databases/raw/master/demoWith1ledger.yml.gz -O /root/demoWith1ledger.yml.gz
+RUN wget --quiet https://github.com/openpetra/demo-databases/raw/master/base.yml.gz -O /usr/local/openpetra/db/base.yml.gz
+RUN wget --quiet https://github.com/openpetra/demo-databases/raw/master/clean.yml.gz -O /usr/local/openpetra/db/clean.yml.gz
 
 RUN cd /root && git clone https://github.com/openpetra/openpetra.git -b test --depth 50 .openpetra
 
 # set CI=1 to avoid too much output from installing cypress. see https://github.com/cypress-io/cypress/issues/1243#issuecomment-365560861
 RUN cd /root/.openpetra/js-client && CI=1 npm install --quiet
-
-RUN mkdir -p /usr/local/openpetra/bin
-RUN mkdir -p /usr/local/openpetra/server
-RUN mkdir -p /usr/local/openpetra/etc
-RUN mkdir -p /usr/local/openpetra/db
 
 COPY files/OpenPetra.build.config.ubuntu /root/.openpetra/OpenPetra.build.config
 COPY files/web.config /usr/local/openpetra/server/web.config
@@ -58,6 +60,8 @@ RUN rm -f /usr/lib/mono/4.5-api/System.dll
 
 RUN cd /root/.openpetra && nant generateSolution
 RUN cd /root/.openpetra && nant createSQLStatements
+
+RUN cd /root && git clone https://github.com/SolidCharity/OpenPetraScripts.git
 
 COPY files/init.sh /root
 RUN chmod a+x /root/init.sh
