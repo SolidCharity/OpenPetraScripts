@@ -9,7 +9,8 @@ fi
 typeOfOS=$1
 localworkdir=$2
 
-image=openpetra-dev.$typeOfOS
+organisation=solidcharity
+image=$organisation/openpetra-dev.$typeOfOS
 name=openpetra-dev.$typeOfOS
 sshport=2008
 httpport=8008

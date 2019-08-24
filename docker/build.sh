@@ -8,8 +8,9 @@ then
 fi
 typeOfOS=$1
 
+organisation=solidcharity
 image=openpetra-dev.$typeOfOS
 name=openpetra-dev.$typeOfOS
 sudo docker build -t $image -f Dockerfile.$typeOfOS .
-
+sudo docker tag $image $organisation/$image
 echo "now run ./install.sh"
