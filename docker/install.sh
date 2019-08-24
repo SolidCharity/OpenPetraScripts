@@ -28,4 +28,4 @@ echo "first step: ./init.sh"
 echo
 echo
 sleep 5
-ssh -p 2008 root@localhost
+ssh -p $sshport root@localhost

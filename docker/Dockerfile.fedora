@@ -1,6 +1,6 @@
 FROM fedora:30
 ENV container docker
-RUN dnf -y install net-tools openssh-server glibc-locale-source passwd
+RUN dnf -y install net-tools openssh-server glibc-locale-source passwd && dnf clean all
 RUN mkdir /var/run/sshd
 
 # create host ssh key
@@ -15,19 +15,18 @@ RUN echo "export VISIBLE=now" >> /etc/profile
 RUN systemctl enable sshd
 
 RUN export DOWNLOAD_LATEST_PACKAGES=2019.08a
-RUN dnf -y install liberation-fonts liberation-fonts-common liberation-mono-fonts liberation-narrow-fonts liberation-serif-fonts liberation-sans-fonts
-RUN dnf -y install mono-devel libgdiplus-devel xsp mono-mvc mono-data mono-data-sqlite nant xsp
-RUN dnf -y install mariadb-server nginx wget curl tar sqlite gettext libsodium git unzip
-RUN dnf -y install phpmyadmin php-cli 
-RUN dnf -y install https://downloads.wkhtmltopdf.org/0.12/0.12.5/wkhtmltox-0.12.5-1.centos7.x86_64.rpm
+RUN dnf -y install liberation-fonts liberation-fonts-common liberation-mono-fonts liberation-narrow-fonts liberation-serif-fonts liberation-sans-fonts \
+  mono-devel libgdiplus-devel xsp mono-mvc mono-data mono-data-sqlite nant xsp \
+  mariadb-server nginx wget curl tar sqlite gettext libsodium git unzip \
+  phpmyadmin php-cli \
 # for cypress tests
-RUN dnf -y install libXScrnSaver GConf2 Xvfb
+  libXScrnSaver GConf2 Xvfb \
 # for client
-#RUN curl --silent --location https://rpm.nodesource.com/setup_8.x  | bash -
-RUN dnf -y install nodejs
+  nodejs \
+  https://downloads.wkhtmltopdf.org/0.12/0.12.5/wkhtmltox-0.12.5-1.centos7.x86_64.rpm \
+ &&  dnf clean all
+
 RUN cd /root && npm install -g browserify --quiet && npm install -g uglify-es --quiet
-# reduce the size of the docker image
-RUN dnf clean all
 
 # for printing bar codes
 RUN wget --quiet https://github.com/Holger-Will/code-128-font/raw/master/fonts/code128.ttf -O /usr/share/fonts/code128.ttf
