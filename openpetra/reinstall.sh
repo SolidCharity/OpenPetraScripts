@@ -12,12 +12,6 @@ then
 fi
 
 shopt -s nullglob
-for f in /usr/lib/systemd/system/op_*
-do
-echo "stopping $f"
-  systemctl stop `basename $f`
-  systemctl disable `basename $f`
-done
 systemctl stop openpetra-server
 systemctl stop nginx
 systemctl stop mariadb
@@ -36,7 +30,6 @@ done
 
 rm -Rf /etc/nginx
 rm -Rf /var/lib/mysql
-rm -Rf /usr/lib/systemd/system/op_*
 
 # drop OpenPetra services from /etc/services
 cat /etc/services | grep -v "# OpenPetra for" > /etc/services.new
