@@ -21,16 +21,14 @@ On CentOS:
     cd OpenPetraScripts/openpetra
     ./reinstall.sh
     # now initialize your instance, for example:
-    # to install the instance demo.openpetra.org, with the database on localhost, and the initial password for SYSADMIN:
-    URL=openpetra.org PREFIX= SYSADMIN_PWD=Test1234_ ./addOpenPetraInstance.sh demo localhost
-    # replace localhost with the IP address or with the URL of your installation
-    sed -i "s#http://localhost/api';#http://192.168.124.70/api';#g" /etc/nginx/conf.d/openpetra.conf
+    # to install the instance demo.openpetra.org, with the database on localhost:
+    URL=openpetra.org PREFIX= ./addOpenPetraInstance.sh demo localhost
     systemctl restart nginx
 
 You can now reach OpenPetra at:
 
 * http://192.168.124.70
-* http://192.168.124.70/api
+* http://192.168.124.70/api/
 
 You can login with user sysadmin and password CHANGEME.
 
@@ -46,8 +44,9 @@ On CentOS:
     git clone https://github.com/TBits/OpenPetraScripts.git
     cd OpenPetraScripts/openpetra
     ./reinstall.sh
-    # replace localhost with the IP address or with the URL of your installation
-    sed -i "s#http://localhost/api';#http://192.168.124.70/api';#g" /etc/nginx/conf.d/openpetra.conf
+    # now initialize your instance, for example:
+    # to install the instance demo.openpetra.org, with the database on localhost:
+    URL=openpetra.org PREFIX= ./addOpenPetraInstance.sh demo localhost
     systemctl restart nginx
 
     ./setupDevEnv.sh
@@ -60,14 +59,14 @@ On CentOS:
 You can now reach OpenPetra at:
 
 * http://192.168.124.70
-* http://192.168.124.70/api
+* http://192.168.124.70/api/
 * http://192.168.124.70/phpMyAdmin
 
 You can login with user sysadmin and password CHANGEME, or with user demo and password DEMO.
 
 You can run the ./mysql.sh script to get the database username and password, and use phpMyAdmin to browse the database.
 
-You can now edit the client code in /root/openpetra-client-js, run there `npm run build` and refresh your browser.
+You can now edit the client code in /root/openpetra/js-client, run there `npm run build` and refresh your browser.
 
 And you can work on the server code in /root/openpetra, run there `nant quickCompile install` and refresh your browser.
 
@@ -79,6 +78,7 @@ Setup the demo.openpetra.org
     git clone https://github.com/TBits/OpenPetraScripts.git
     cd OpenPetraScripts/openpetra
     ./reinstall.sh
+    URL=openpetra.org PREFIX= ./addOpenPetraInstance.sh demo localhost
 
     # configure the demo
     yum install wget

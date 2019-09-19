@@ -10,7 +10,7 @@ if [ -z "$1" ]
 then
   echo "call: URL=<domain> PREFIX=<prefix> SYSADMIN_PWD=<inital_passwd> [OPENPETRA_HTTP_PORT=<port>] $0 <customer> localhost"
   echo "call: URL=<domain> $0 <customer> <dbhost> <dbname> <dbuser> <dbpwd> <sysadminpwd>"
-  echo " eg. URL=openpetra.org PREFIX= SYSADMIN_PWD=Test1234_ ./addOpenPetraInstance.sh test500 localhost"
+  echo " eg. URL=openpetra.org PREFIX= SYSADMIN_PWD=`openpetra-server generatepwd` ./addOpenPetraInstance.sh test localhost"
   echo " eg. URL=openpetra.org PREFIX=op SYSADMIN_PWD=Test1234_ ./addOpenPetraInstance.sh 012345 localhost"
   exit -1
 fi
@@ -23,7 +23,8 @@ fi
 
 if [ -z "$SYSADMIN_PWD" ]
 then
-  export SYSADMIN_PWD=`openpetra-server generatepwd`
+  # lets keep it simple: it is CHANGEME by default
+  #export SYSADMIN_PWD=`openpetra-server generatepwd`
 fi
 
 function FindFreePort()
