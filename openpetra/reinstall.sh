@@ -12,7 +12,7 @@ then
 fi
 
 shopt -s nullglob
-systemctl stop openpetra-server
+systemctl stop openpetra
 systemctl stop nginx
 systemctl stop mariadb
 
@@ -38,10 +38,12 @@ mv /etc/services.new /etc/services
 # enable the repo
 cd /etc/yum.repos.d
 repourl=https://lbs.solidcharity.com/repos/solidcharity/openpetra/centos/7/lbs-solidcharity-openpetra.repo
-if [ ! -f `basename $repourl` ]
+repofile=`basename $repourl`
+if [ ! -f $repofile ]
 then
-  curl -L $repourl -o `basename $repourl`
+  curl -L $repourl -o $repofile
 fi
+sed -i "s/^enabled.*/enabled = 1/g" $repofile
 cd -
 
 yum clean all
@@ -59,9 +61,9 @@ then
   cp /tmp/openpetra-server /usr/bin
 fi
 
-export OPENPETRA_DBPWD=`openpetra-server generatepwd`
-openpetra-server init || exit -1
-openpetra-server initdb || exit -1
+adduser openpetra
+systemctl enable openpetra
+systemctl start openpetra
 
 crontab -l || echo | crontab - >> /dev/null 2>&1
 if [[ "`crontab -l | grep openpetra/backup.sh`" == "" ]]
@@ -71,3 +73,8 @@ then
   systemctl enable crond
   systemctl start crond
 fi
+
+echo "now initialize your instance, for example:"
+echo "to install the instance demo.openpetra.org, with the database on localhost, and the initial password for SYSADMIN:"
+echo
+echo "URL=openpetra.org PREFIX= SYSADMIN_PWD=topsecret ./addOpenPetraInstance.sh demo localhost"
