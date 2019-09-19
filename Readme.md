@@ -22,7 +22,7 @@ On CentOS:
     ./reinstall.sh
     # now initialize your instance, for example:
     # to install the instance demo.openpetra.org, with the database on localhost, and the initial password for SYSADMIN:
-    URL=openpetra.org PREFIX= SYSADMIN_PWD=topsecret ./addOpenPetraInstance.sh demo localhost
+    URL=openpetra.org PREFIX= SYSADMIN_PWD=Test1234_ ./addOpenPetraInstance.sh demo localhost
     # replace localhost with the IP address or with the URL of your installation
     sed -i "s#http://localhost/api';#http://192.168.124.70/api';#g" /etc/nginx/conf.d/openpetra.conf
     systemctl restart nginx

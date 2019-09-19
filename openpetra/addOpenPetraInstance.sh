@@ -10,8 +10,8 @@ if [ -z "$1" ]
 then
   echo "call: URL=<domain> PREFIX=<prefix> SYSADMIN_PWD=<inital_passwd> [OPENPETRA_HTTP_PORT=<port>] $0 <customer> localhost"
   echo "call: URL=<domain> $0 <customer> <dbhost> <dbname> <dbuser> <dbpwd> <sysadminpwd>"
-  echo " eg. URL=openpetra.org PREFIX= SYSADMIN_PWD=topsecret ./addOpenPetraInstance.sh test500 localhost"
-  echo " eg. URL=openpetra.org PREFIX=op SYSADMIN_PWD=topsecret ./addOpenPetraInstance.sh 012345 localhost"
+  echo " eg. URL=openpetra.org PREFIX= SYSADMIN_PWD=Test1234_ ./addOpenPetraInstance.sh test500 localhost"
+  echo " eg. URL=openpetra.org PREFIX=op SYSADMIN_PWD=Test1234_ ./addOpenPetraInstance.sh 012345 localhost"
   exit -1
 fi
 
@@ -63,6 +63,7 @@ then
   FindFreePort $FIRST_HTTP_PORT
   export OPENPETRA_HTTP_PORT=$id
 fi
+
 # add service
 echo -e "op_$customer\t$OPENPETRA_HTTP_PORT/tcp\t\t\t# OpenPetra for $customer" >> /etc/services
 
