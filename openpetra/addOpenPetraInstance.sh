@@ -34,10 +34,10 @@ function FindFreePort()
   # getent services 7102/tcp would find too many other service ports that are not in use.
   startid=$1
   testid=$[$startid]
-  exists=`grep -E '$testid/tcp.*OpenPetra' /etc/services`
+  exists=`grep -E "$testid/tcp.*OpenPetra" /etc/services`
   while [[ ! "$exists" = "" ]]; do
     testid=$[$testid+1]
-    exists=`grep -E '$testid/tcp.*OpenPetra' /etc/services`
+    exists=`grep -E "$testid/tcp.*OpenPetra" /etc/services`
   done;
   export id=$testid
 }
