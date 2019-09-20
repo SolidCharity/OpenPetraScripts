@@ -4,7 +4,7 @@
 # Copyright: 2019 SolidCharity.com
 # Description: add a new OpenPetra instance, creating/overwriting the database
 
-export FIRST_HTTP_PORT=7100
+export FIRST_HTTP_PORT=7000
 
 if [ -z "$1" ]
 then
@@ -29,13 +29,15 @@ fi
 
 function FindFreePort()
 {
-  # this functions searches the /etc/services file until it finds a free port for a new database
+  # this functions searches the /etc/services file until it finds a free port for a new database 
+  # that has not been used for an OpenPetra instance yet.
+  # getent services 7102/tcp would find too many other service ports that are not in use.
   startid=$1
   testid=$[$startid]
-  exists="yes"
+  exists=`grep -E '$testid/tcp.*OpenPetra' /etc/services`
   while [[ ! "$exists" = "" ]]; do
     testid=$[$testid+1]
-    exists=`getent services $testid/tcp`
+    exists=`grep -E '$testid/tcp.*OpenPetra' /etc/services`
   done;
   export id=$testid
 }

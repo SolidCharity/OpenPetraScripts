@@ -27,12 +27,12 @@ On CentOS:
 
 You can now reach OpenPetra at:
 
-* http://192.168.124.70
-* http://192.168.124.70/api/
+* http://192.168.124.70:7000
+* http://192.168.124.70:7000/api/
 
 You can login with user sysadmin and password CHANGEME.
 
-Please note: It is recommended to use https for production use. You could modify the nginx configuration, but that is not part of these scripts, because we are using a reverse proxy for https at TBits.net.
+Please note: It is recommended to use https for production use. You could modify the nginx configuration, but that is not part of these scripts. We use an nginx proxy to forward from eg. https://myinstance.openpetra.com to the container, 192.168.124.70:7000.
 
 Setup a development environment
 -------------------------------
@@ -58,9 +58,9 @@ On CentOS:
 
 You can now reach OpenPetra at:
 
-* http://192.168.124.70
-* http://192.168.124.70/api/
-* http://192.168.124.70/phpMyAdmin
+* http://192.168.124.70:7000
+* http://192.168.124.70:7000/api/
+* http://192.168.124.70:7000/phpMyAdmin
 
 You can login with user sysadmin and password CHANGEME, or with user demo and password DEMO.
 
