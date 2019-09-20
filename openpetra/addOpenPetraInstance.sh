@@ -21,11 +21,11 @@ then
   exit -1
 fi
 
-if [ -z "$SYSADMIN_PWD" ]
-then
-  # lets keep it simple: it is CHANGEME by default
-  #export SYSADMIN_PWD=`openpetra-server generatepwd`
-fi
+# lets keep it simple: it is CHANGEME by default
+#if [ -z "$SYSADMIN_PWD" ]
+#then
+#  export SYSADMIN_PWD=`openpetra-server generatepwd`
+#fi
 
 function FindFreePort()
 {

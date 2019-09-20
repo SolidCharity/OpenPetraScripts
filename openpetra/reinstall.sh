@@ -77,4 +77,4 @@ fi
 echo "now initialize your instance, for example:"
 echo "to install the instance demo.openpetra.org, with the database on localhost, and the initial password for SYSADMIN:"
 echo
-echo "URL=openpetra.org PREFIX= SYSADMIN_PWD=topsecret ./addOpenPetraInstance.sh demo localhost"
+echo "URL=openpetra.org PREFIX= ./addOpenPetraInstance.sh demo localhost"
