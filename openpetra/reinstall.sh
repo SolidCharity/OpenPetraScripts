@@ -61,10 +61,6 @@ then
   cp /tmp/openpetra-server /usr/bin
 fi
 
-adduser openpetra
-systemctl enable openpetra
-systemctl start openpetra
-
 crontab -l || echo | crontab - >> /dev/null 2>&1
 if [[ "`crontab -l | grep openpetra/backup.sh`" == "" ]]
 then
