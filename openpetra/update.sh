@@ -19,12 +19,9 @@ customer=$1
 
 function upgrade {
   customer=$1
-  if [[ "`systemctl is-active $customer`" == "active" ]]
-  then
-    echo "updating $customer"
-    export OP_CUSTOMER=$customer
-    /usr/bin/openpetra-server upgradedb
-  fi
+  echo "updating $customer"
+  export OP_CUSTOMER=$customer
+  /usr/bin/openpetra-server upgradedb
 }
 
 if [ ! -z "$customer" ]
