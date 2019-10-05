@@ -34,6 +34,11 @@ function set_config {
         sed -i "s/\"SmtpPassword\" value=\".*\"/\"SmtpPassword\" value=\"$SMTPPWD\"/g" $cfgfile
       fi
 
+      if [ ! -z $LICENSECHECKURL ]
+      then
+        sed -i "s#\"LicenseCheck.Url\" value=\".*\"#\"LicenseCheck.Url\" value=\"https://$LICENSECHECKURL/api.validate?instance_number=\"#g" $cfgfile
+      fi
+
       # add new line
       # grep -q returns 0 if text was found
       if ! grep -q 'Server.EmailDomain' $cfgfile
