@@ -36,7 +36,7 @@ function set_config {
 
       if [ ! -z $LICENSECHECKURL ]
       then
-        sed -i "s#\"LicenseCheck.Url\" value=\".*\"#\"LicenseCheck.Url\" value=\"https://$LICENSECHECKURL/api.validate?instance_number=\"#g" $cfgfile
+        sed -i "s#\"LicenseCheck.Url\" value=\".*\"#\"LicenseCheck.Url\" value=\"https://$LICENSECHECKURL/api/validate?instance_number=\"#g" $cfgfile
       fi
 
       # add new line
